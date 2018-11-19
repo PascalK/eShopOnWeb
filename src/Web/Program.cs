@@ -23,11 +23,11 @@ namespace Microsoft.eShopWeb.Web
                 try
                 {
                     var catalogContext = services.GetRequiredService<CatalogContext>();
-                    CatalogContextSeed.SeedAsync(catalogContext, loggerFactory)
-            .Wait();
+                    CatalogContextSeed.SeedAsync(catalogContext, loggerFactory).GetAwaiter().GetResult();
 
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
+                    var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+                    AppIdentityDbContextSeed.SeedAsync(identityContext, userManager).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {

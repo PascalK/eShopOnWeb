@@ -23,11 +23,11 @@ namespace Microsoft.eShopWeb.RazorPages
                 try
                 {
                     var catalogContext = services.GetRequiredService<CatalogContext>();
-                    CatalogContextSeed.SeedAsync(catalogContext, loggerFactory)
-            .Wait();
+                    CatalogContextSeed.SeedAsync(catalogContext, loggerFactory).GetAwaiter().GetResult();
 
+                    var identityContent = services.GetRequiredService<AppIdentityDbContext>();
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    AppIdentityDbContextSeed.SeedAsync(userManager).Wait();
+                    AppIdentityDbContextSeed.SeedAsync(identityContent, userManager).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {
